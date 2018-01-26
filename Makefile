@@ -3,3 +3,6 @@ test:
 
 shell:
 	env/bin/python
+
+solve:
+	env/bin/python solutions/$(DAY)

@@ -13,4 +13,3 @@ def solve(input):
         if digit == next_digit:
             sum += digit
     return sum
-
