@@ -1,7 +1,7 @@
-class Bank():
+class Bank(object):
     def __init__(self, banks):
         self.banks = banks
-        self.history = [self.banks]
+        self.history = [banks[:]]
 
     def add_block(self, index):
         try:
@@ -12,19 +12,19 @@ class Bank():
             index = 1
         return index
 
-    def distribute_blocks(self):
-        blocks, index = self.remove_blocks()
-        index += 1
-        while blocks > 0:
-            index = self.add_block(index)
-            blocks -= 1
-
     def remove_blocks(self):
         max_blocks = max(self.banks)
         index = self.banks.index(max_blocks)
         blocks = self.banks[index]
         self.banks[index] = 0
         return blocks, index
+
+    def distribute_blocks(self):
+        blocks, index = self.remove_blocks()
+        index += 1
+        while blocks > 0:
+            index = self.add_block(index)
+            blocks -= 1
 
     def is_repeat_state(self):
         if self.banks in self.history:
@@ -34,15 +34,12 @@ class Bank():
     def cycles(self):
         return len(self.history)
 
-    def update_history(self, banks):
-        self.history.append(banks)
-
     def reallocate_blocks(self):
         while True:
-            self.update_history(self.banks)
             self.distribute_blocks()
             if self.is_repeat_state():
                 break
+            self.history.append(self.banks[:])
         return self.banks
 
     def solve(self):

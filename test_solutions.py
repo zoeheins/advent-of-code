@@ -11,6 +11,7 @@ class TestDayOne(unittest.TestCase):
         result = day1.solve('1234')
         self.assertEqual(result, 0)
 
+
 class TestDayFour(unittest.TestCase):
 
     def test_returns_valid(self):
@@ -23,6 +24,25 @@ class TestDayFour(unittest.TestCase):
         input = ['aa aa', 'bb cc', 'dd dd']
         result = day4.solve(input)
         self.assertEqual(result, 1)
+
+
+class TestDayFive(unittest.TestCase):
+
+    def test_jump_increases_offset(self):
+        offsets = day5.jump([0, 3, 0, 1, -3], 0)
+        self.assertEqual(offsets, ([1, 3, 0, 1, -3], 0))
+
+    def test_jumps_moves_backwards(self):
+        offsets = day5.jump([2, 4, 0, 1, -3], 4)
+        self.assertEqual(offsets, ([2, 4, 0, 1, -2], 1))
+
+    def test_jump_returns_none_when_lands_outside(self):
+        offsets = day5.jump([2, 4, 0, 1, -2], 1)
+        self.assertEqual(offsets, (None, None))
+
+    def test_solve_returns_total_step(self):
+        self.assertEqual(5, day5.solve([0, 3, 0, 1, -3]))
+
 
 class TestDaySix(unittest.TestCase):
 
