@@ -90,3 +90,49 @@ class TestDaySix(unittest.TestCase):
     def test_solve_returns_total_cycles(self):
         bank = day6.Bank([0, 2, 7, 0])
         self.assertEqual(bank.solve(), 5)
+
+
+class TestDayEight(unittest.TestCase):
+
+    def test_parse_instruction_returns_correct_values(self):
+        values = day8.parse_instruction('b inc 5 if a > 1')
+        self.assertEqual(values, ('b', 5, 'a > 1'))
+
+    def test_parse_instructions_can_parse_a_negative_value(self):
+        values = day8.parse_instruction('c dec -10 if a >= 1')
+        self.assertEqual(values, ('c', 10, 'a >= 1'))
+
+    def test_eval_condition_returns_false(self):
+        eval = day8.evaluate_condition('a > 1', {})
+        self.assertEqual(eval, False)
+
+    def test_evaluate_condition_returns_true(self):
+        eval = day8.evaluate_condition('b <= 0', {'b': 0})
+        self.assertEqual(eval, True)
+
+    def test_update_register_increase_reg_value(self):
+        new_regs = day8.update_register('a', -10, {'a': 0})
+        self.assertEqual(new_regs, {'a': -10})
+
+    def test_process_instructions_adds_new_registers(self):
+        new_regs = day8.process_instruction('b inc 5 if a > 1', {})
+        self.assertEqual(new_regs, {'a': 0, 'b': 0})
+
+    def test_process_instructions_updates_register(self):
+        new_regs = day8.process_instruction('b inc 5 if a == 0', {'a': 0})
+        self.assertEqual(new_regs, {'a': 0, 'b': 5})
+
+    def test_process_instructions_doesnt_modify_register(self):
+        new_regs = day8.process_instruction('b inc 5 if a != 0', {'a': 0})
+        self.assertEqual(new_regs, {'a': 0, 'b': 0})
+
+    def test_solve_returns_max_value_in_register(self):
+        instructions = [
+            'b inc 5 if a > 1',
+            'a inc 1 if b < 5',
+            'c dec -10 if a >= 1',
+            'c inc -20 if c == 10',
+        ]
+        max_value = day8.solve(instructions)
+        self.assertEqual(max_value, 1)
+
